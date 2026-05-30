@@ -1,52 +1,60 @@
-## Paso 3 de 3 — Configurar Dependabot
+## ¡Tutorial completado! 🎉
 
-¡Las vulnerabilidades del código están corregidas! 🛡️
+¡Enhorabuena! Has completado los tres pasos del tutorial de seguridad en pipelines de GitHub Actions.
 
-### Contexto
+### Lo que has aprendido
 
-El archivo `requirements.txt` tiene dependencias con versiones antiguas que contienen vulnerabilidades conocidas.  
-**Dependabot** monitoriza las dependencias de tu proyecto y abre Pull Requests automáticos cuando hay versiones más seguras disponibles.
+| ✅ | Habilidad adquirida |
+|---|---|
+| ✅ | Configurar un workflow de **SAST con Semgrep** en GitHub Actions |
+| ✅ | Identificar y corregir **SQL Injection** en código Python |
+| ✅ | Identificar y corregir **Command Injection** con `os.system` |
+| ✅ | Eliminar **credenciales hardcodeadas** del código fuente |
+| ✅ | Activar **Dependabot** para monitorizar dependencias vulnerables |
 
-### Tu tarea
+### Conceptos clave
 
-Crea el archivo `.github/dependabot.yml` con el siguiente contenido:
+- **SAST** — Static Application Security Testing: análisis del código fuente sin ejecutarlo
+- **SCA** — Software Composition Analysis: análisis de dependencias de terceros
+- **SQL Injection** — el input del usuario se inyecta directamente en una consulta SQL; se evita con parámetros `?`
+- **Command Injection** — el input llega a `os.system()` permitiendo ejecutar comandos arbitrarios; se evita con `subprocess.run(list)`
+- **Hardcoded secrets** — credenciales en el código que pueden filtrarse en el historial de git; se usan variables de entorno en su lugar
 
-```yaml
-version: 2
-updates:
-  - package-ecosystem: pip
-    directory: "/"
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
-    labels:
-      - "dependencies"
-      - "security"
+### Añade tu badge al perfil de GitHub
+
+Copia este badge y pégalo en el `README.md` de tu repositorio de perfil (`tu-usuario/tu-usuario`):
+
+```markdown
+![Security Pipeline Tutorial](https://img.shields.io/badge/Security_Pipeline_Tutorial-Completado_%E2%9C%85-4caf50?style=flat-square&logo=githubactions&logoColor=white)
 ```
 
-### Cómo hacerlo
+Resultado: ![Security Pipeline Tutorial](https://img.shields.io/badge/Security_Pipeline_Tutorial-Completado_%E2%9C%85-4caf50?style=flat-square&logo=githubactions&logoColor=white)
 
-**Opción A — Desde la interfaz web:**
-1. Ve a tu repositorio → **Add file** → **Create new file**
-2. Nombre del archivo: `.github/dependabot.yml`
-3. Pega el contenido de arriba
-4. Haz click en **Commit changes** → **Commit directly to the `main` branch**
+> Ve a `github.com/tu-usuario/tu-usuario` (o créalo si no existe) y edita el `README.md` para añadirlo.
 
-**Opción B — Desde la terminal:**
-```bash
-# crea .github/dependabot.yml con el contenido de arriba
-git add .github/dependabot.yml
-git commit -m "ci: enable Dependabot for Python dependencies"
-git push
-```
+### ¿Listo para el siguiente nivel?
 
-### ¿Qué pasará?
+Has dominado los fundamentos. El siguiente tutorial cubre 10 disciplinas de DevSecOps de nivel enterprise:
 
-- Dependabot comenzará a monitorizar `requirements.txt`
-- En las próximas horas abrirá PRs para actualizar `flask` y `requests` a versiones seguras
-- Si el repositorio es público verás las alertas en **Security → Dependabot alerts**
+| # | Disciplina | Herramienta |
+|---|---|---|
+| 1-2 | SAST + CI/CD Hardening | Semgrep, permisos mínimos |
+| 3-4 | Container Scan + Fix | Trivy, Dockerfile hardening |
+| 5-6 | IaC Scan + Fix | Checkov, Terraform |
+| 7 | Secrets Detection | gitleaks |
+| 8-9 | Falsos Positivos + Excepciones | nosemgrep, governance YAML |
+| 10 | SBOM + Supply Chain | Syft, Grype |
 
-Este README se actualizará a **¡Completado!** en cuanto detecte el archivo ✅
+**[🚀 Continuar con el Tutorial Avanzado de DevSecOps — 10 pasos](https://github.com/jgutierrezdtt/advanced-devsecops-tutorial)**
 
 ---
-*Paso 3 de 3 · Tutorial de Seguridad en Pipelines*
+
+### Próximos pasos recomendados
+
+1. **Activa Dependabot en tus repos reales** — revisa Security → Dependabot alerts
+2. **Explora más reglas de Semgrep** — prueba `p/owasp-top-ten` o `p/django` según tu stack
+3. **Prueba CodeQL** — análisis semántico más profundo disponible con GitHub Advanced Security
+4. **Consulta el repo de pipelines** — workflows reutilizables de seguridad para toda la organización
+
+---
+*Tutorial completado · Seguridad en Pipelines de GitHub Actions*
