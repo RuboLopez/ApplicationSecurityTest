@@ -1,43 +1,65 @@
-# 🔐 Tutorial: Seguridad en Pipelines de GitHub Actions
+## Paso 1 de 3 — Añadir análisis SAST con Semgrep
 
-Bienvenido al **tutorial interactivo de seguridad**. Este repositorio te guía paso a paso para configurar herramientas de seguridad en tus pipelines de GitHub Actions.
+¡El tutorial ha comenzado! 🎉
 
-## ¿Qué vas a aprender?
+### Contexto
 
-| Paso | Tema | Herramienta |
-|------|------|-------------|
-| 1 | Análisis estático de código (SAST) | Semgrep |
-| 2 | Identificar y corregir vulnerabilidades | Código + Semgrep |
-| 3 | Monitorización de dependencias vulnerables | Dependabot |
+Este repositorio incluye el archivo `src/app.py` con tres vulnerabilidades de seguridad y las reglas Semgrep para detectarlas en `.semgrep/rules.yml`.
 
-## ¿Cómo funciona?
+En este paso añadirás un **workflow de análisis estático (SAST)** para que Semgrep analice el código automáticamente en cada push.
 
+### Tu tarea
+
+Crea el archivo `.github/workflows/sast.yml` con el siguiente contenido:
+
+```yaml
+name: SAST con Semgrep
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  semgrep:
+    name: Análisis estático
+    runs-on: ubuntu-latest
+    container:
+      image: semgrep/semgrep
+    steps:
+      - uses: actions/checkout@v4
+      - run: semgrep scan --config=.semgrep/rules.yml --error src/
 ```
-Tú completas una tarea → GitHub Actions lo detecta → README se actualiza → siguiente paso
+
+### Cómo hacerlo
+
+**Opción A — Desde la interfaz web de GitHub:**
+1. Ve a tu repositorio → **Add file** → **Create new file**
+2. Nombre del archivo: `.github/workflows/sast.yml`
+3. Pega el contenido de arriba
+4. Haz click en **Commit changes** → **Commit directly to the `main` branch**
+
+**Opción B — Desde la terminal:**
+```bash
+mkdir -p .github/workflows
+# crea .github/workflows/sast.yml con el contenido de arriba
+git add .github/workflows/sast.yml
+git commit -m "ci: add Semgrep SAST workflow"
+git push
 ```
 
-Cada vez que completes un paso, este README se actualizará automáticamente con las instrucciones del siguiente.
+### ¿Qué pasará?
 
-## Empezar
+Cuando hagas push de `sast.yml`:
+- Semgrep analizará `src/app.py` con las reglas de `.semgrep/rules.yml`
+- Encontrará **3 vulnerabilidades** — eso es lo esperado
+- El workflow **fallará** (❌) porque existen hallazgos
+- Verás los resultados en **Actions** → click en el run → click en el job `semgrep`
+- Este README se actualizará al **Paso 2** ✅
 
-1. Haz click en **"Use this template"** → **"Create a new repository"** para crear tu copia personal
-2. En tu nuevo repositorio, ve a la pestaña **Actions**
-3. Si ves el aviso *"Workflows aren't being run on this forked repository"*, haz click en **"I understand my workflows, enable them"**
-4. En el panel izquierdo haz click en **"Step 0: Empezar tutorial"**
-5. Haz click en **"Run workflow"** → **"Run workflow"**
-
-¡El README se actualizará con el Paso 1 en unos segundos!
+> Si el workflow no aparece en Actions, ve a **Settings → Actions → Allow all actions** y vuelve a hacer push.
 
 ---
-
-> **Nota**: Si en lugar de "Use this template" hiciste fork, activa Actions desde **Settings → Actions → Allow all actions** antes de empezar.
-
----
-
-### ¿Quieres ir más lejos?
-
-Cuando completes este tutorial (3 pasos), continúa con el nivel avanzado:
-
-**[🚀 Tutorial Avanzado de DevSecOps — 10 pasos](https://github.com/jgutierrezdtt/advanced-devsecops-tutorial)**
-
-> SAST · CI/CD Hardening · Container Scan · IaC Security · Secrets Detection · Falsos Positivos · Política de Excepciones · SBOM
+*Paso 1 de 3 · Tutorial de Seguridad en Pipelines*
