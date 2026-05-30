@@ -6,11 +6,11 @@ NO uses este código en producción.
 
 import os
 import sqlite3
+import subprocess
 
 # Vulnerabilidad 1: credenciales hardcodeadas
-SECRET_KEY = "super-secret-key-1234"
-DATABASE_PASSWORD = "P@ssw0rd_prod_2024!"
-
+DB_PASSWORD = os.environ.get("DB_PASSWORD", "")
+API_KEY = os.environ.get("API_KEY", "")
 
 def search_user(username):
     """Busca un usuario por nombre."""
@@ -18,16 +18,15 @@ def search_user(username):
     cursor = conn.cursor()
 
     # Vulnerabilidad 2: SQL Injection — string concatenado directamente en execute
-    cursor.execute("SELECT * FROM users WHERE name = '" + username + "'")
-
+    query = "SELECT * FROM users WHERE name = ?"
+    cursor.execute(query, (username,))
     return cursor.fetchall()
 
 
 def ping_host(host):
     """Comprueba si un host es accesible."""
     # Vulnerabilidad 3: Command Injection — os.system con input del usuario
-    os.system("ping -c 1 " + host)
-
+    subprocess.run(["ping", "-c", "1", host], check=True)
 
 def main():
     print("App started")
