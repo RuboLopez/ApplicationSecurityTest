@@ -1,2 +1,2 @@
 flask==0.12.4
-requests==2.18.0
+requests==2.34.2
