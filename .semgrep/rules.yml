@@ -1,0 +1,30 @@
+rules:
+  - id: hardcoded-secret-variable
+    patterns:
+      - pattern: $VAR = "..."
+      - metavariable-regex:
+          metavariable: $VAR
+          regex: '(?i)(secret|password|api_key|token|credential)'
+    message: |
+      Variable '$VAR' contiene un valor hardcodeado que parece ser una credencial.
+      Usa variables de entorno en su lugar: os.environ.get("$VAR", "")
+    languages: [python]
+    severity: ERROR
+
+  - id: sql-injection-string-concat
+    patterns:
+      - pattern: $CURSOR.execute("..." + ...)
+    message: |
+      SQL Injection: la consulta se construye concatenando strings.
+      Usa parámetros: cursor.execute("... WHERE name = ?", (username,))
+    languages: [python]
+    severity: ERROR
+
+  - id: command-injection-os-system
+    patterns:
+      - pattern: os.system(... + ...)
+    message: |
+      Command Injection: os.system() con concatenación de strings permite ejecutar
+      comandos arbitrarios. Usa: subprocess.run(["ping", "-c", "1", host], check=True)
+    languages: [python]
+    severity: ERROR
